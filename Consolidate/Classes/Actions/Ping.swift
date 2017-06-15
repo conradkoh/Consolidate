@@ -13,11 +13,10 @@ public class Ping:Actionable{
     public func Execute() {
         if(ip != nil){
             let url_string = URLParser.Normalize(ip!);
-            let url = NSURL.init(string: url_string);
-            let request = NSMutableURLRequest.init(URL: url!);
-            
-            
-            let task = NSURLSession.sharedSession().dataTaskWithRequest(request, completionHandler: {_,_,_ in 
+            let url = URL.init(string: url_string);
+            let request = URLRequest.init(url: url!)
+            let task = URLSession.shared.dataTask(with: request, completionHandler: { (_,_,_) -> Void in
+                
             })
             task.resume();
         }

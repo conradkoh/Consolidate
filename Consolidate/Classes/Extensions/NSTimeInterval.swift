@@ -7,13 +7,13 @@
 //
 
 import Foundation
-extension NSTimeInterval
+extension TimeInterval
 {
     func ToString() -> String{
         
         let ti = NSInteger(self)
         
-        let ms = Int((self % 1) * 1000)
+        let ms = Int((self.truncatingRemainder(dividingBy: 1)) * 1000)
         
         let seconds = ti % 60
         let minutes = (ti / 60) % 60

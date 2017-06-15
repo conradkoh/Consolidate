@@ -11,18 +11,17 @@ import Foundation
 //Bus Stop Object
 //==============================================
 public struct BusStop{
-    public var services:[BusService]{get{
+    public var services:[BusService]{
         return _services;
-        }
     }
-    private var _services:[BusService] = [BusService]();
-    public init(data:NSData){
+    fileprivate var _services:[BusService] = [BusService]();
+    public init(data:Data){
         do{
             
-            let jsonData = try NSJSONSerialization.JSONObjectWithData(data, options: []);
+            let jsonData = try JSONSerialization.jsonObject(with: data, options: []);
             //let str = String.init(data: data, encoding: NSUTF8StringEncoding);
             let jsonDict = jsonData as! NSDictionary;
-            let services = jsonDict.valueForKey(Keys.SERVICES) as? [[String:AnyObject]];
+            let services = jsonDict.value(forKey: Keys.SERVICES) as? [[String:AnyObject]];
             if(services != nil){
                 _services = [BusService]();
                 for service in services!{

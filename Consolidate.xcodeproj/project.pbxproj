@@ -7,7 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		790BFA471CBAA6860022DD6E /* DismissableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 790BFA461CBAA6860022DD6E /* DismissableViewController.swift */; };
 		79167C441CA62617000E710E /* NSTimeInterval.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79167C431CA62617000E710E /* NSTimeInterval.swift */; };
+		792C1FF01CBA5DFF0055FAE5 /* Style.swift in Sources */ = {isa = PBXBuildFile; fileRef = 792C1FEF1CBA5DFF0055FAE5 /* Style.swift */; };
 		792FA2551CA3F22B0070C7BB /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 792FA2541CA3F22B0070C7BB /* String.swift */; };
 		792FA2581CA3F8E60070C7BB /* BusSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 792FA2571CA3F8E60070C7BB /* BusSearch.swift */; };
 		792FA25A1CA420760070C7BB /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 792FA2591CA420760070C7BB /* API.swift */; };
@@ -21,7 +23,12 @@
 		793A592A1CB8AC420003D32C /* Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = 793A59291CB8AC420003D32C /* Home.swift */; };
 		793A592D1CB8ACDF0003D32C /* URLParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 793A592C1CB8ACDF0003D32C /* URLParser.swift */; };
 		793A592F1CB8B9B10003D32C /* Ping.swift in Sources */ = {isa = PBXBuildFile; fileRef = 793A592E1CB8B9B10003D32C /* Ping.swift */; };
+		794BDE601CB91D7C0087256A /* ModelDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 794BDE5F1CB91D7C0087256A /* ModelDelegate.swift */; };
+		794BDE621CB929B70087256A /* Summarize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 794BDE611CB929B70087256A /* Summarize.swift */; };
+		794BDE661CB93F770087256A /* NSURL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 794BDE651CB93F770087256A /* NSURL.swift */; };
 		795BABD71CB66A260005188C /* VideoAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 795BABD61CB66A260005188C /* VideoAPI.swift */; };
+		796980651EF2BEF6008EFC83 /* JiraAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 796980641EF2BEF6008EFC83 /* JiraAPI.swift */; };
+		796980671EF2C427008EFC83 /* JiraSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 796980661EF2C427008EFC83 /* JiraSearch.swift */; };
 		796F56111CAA6065001B72B7 /* BusAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 796F56101CAA6065001B72B7 /* BusAPI.swift */; };
 		796F56181CAA60D2001B72B7 /* Bus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 796F56161CAA60D2001B72B7 /* Bus.swift */; };
 		796F56191CAA60D2001B72B7 /* BusStop.swift in Sources */ = {isa = PBXBuildFile; fileRef = 796F56171CAA60D2001B72B7 /* BusStop.swift */; };
@@ -63,7 +70,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		790BFA461CBAA6860022DD6E /* DismissableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DismissableViewController.swift; sourceTree = "<group>"; };
 		79167C431CA62617000E710E /* NSTimeInterval.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NSTimeInterval.swift; path = Consolidate/Classes/Extensions/NSTimeInterval.swift; sourceTree = "<group>"; };
+		792C1FEF1CBA5DFF0055FAE5 /* Style.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Style.swift; path = Consolidate/Classes/Definitions/Style.swift; sourceTree = "<group>"; };
 		792FA2541CA3F22B0070C7BB /* String.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = String.swift; path = Consolidate/Classes/Extensions/String.swift; sourceTree = "<group>"; };
 		792FA2571CA3F8E60070C7BB /* BusSearch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BusSearch.swift; path = Consolidate/Classes/Actions/BusSearch.swift; sourceTree = "<group>"; };
 		792FA2591CA420760070C7BB /* API.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = API.swift; path = Consolidate/Protocols/API.swift; sourceTree = "<group>"; };
@@ -77,7 +86,12 @@
 		793A59291CB8AC420003D32C /* Home.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Home.swift; path = Consolidate/Classes/Actions/Home.swift; sourceTree = "<group>"; };
 		793A592C1CB8ACDF0003D32C /* URLParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = URLParser.swift; path = Consolidate/Classes/Helpers/URLParser.swift; sourceTree = "<group>"; };
 		793A592E1CB8B9B10003D32C /* Ping.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Ping.swift; path = Consolidate/Classes/Actions/Ping.swift; sourceTree = "<group>"; };
+		794BDE5F1CB91D7C0087256A /* ModelDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ModelDelegate.swift; path = Consolidate/Models/ModelDelegate.swift; sourceTree = "<group>"; };
+		794BDE611CB929B70087256A /* Summarize.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Summarize.swift; path = Consolidate/Classes/Actions/Summarize.swift; sourceTree = "<group>"; };
+		794BDE651CB93F770087256A /* NSURL.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NSURL.swift; path = Consolidate/Classes/Extensions/NSURL.swift; sourceTree = "<group>"; };
 		795BABD61CB66A260005188C /* VideoAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = VideoAPI.swift; path = Consolidate/Classes/APIs/VideoAPI/VideoAPI.swift; sourceTree = "<group>"; };
+		796980641EF2BEF6008EFC83 /* JiraAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JiraAPI.swift; sourceTree = "<group>"; };
+		796980661EF2C427008EFC83 /* JiraSearch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JiraSearch.swift; sourceTree = "<group>"; };
 		796F56101CAA6065001B72B7 /* BusAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BusAPI.swift; path = Consolidate/Classes/APIs/BusAPI/BusAPI.swift; sourceTree = "<group>"; };
 		796F56161CAA60D2001B72B7 /* Bus.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Bus.swift; path = Consolidate/Classes/APIs/BusAPI/Bus.swift; sourceTree = "<group>"; };
 		796F56171CAA60D2001B72B7 /* BusStop.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BusStop.swift; path = Consolidate/Classes/APIs/BusAPI/BusStop.swift; sourceTree = "<group>"; };
@@ -137,6 +151,7 @@
 			children = (
 				792FA2541CA3F22B0070C7BB /* String.swift */,
 				79167C431CA62617000E710E /* NSTimeInterval.swift */,
+				794BDE651CB93F770087256A /* NSURL.swift */,
 			);
 			name = Extensions;
 			sourceTree = "<group>";
@@ -144,6 +159,7 @@
 		792FA25B1CA4214B0070C7BB /* APIs */ = {
 			isa = PBXGroup;
 			children = (
+				796980631EF2BED4008EFC83 /* JiraAPI */,
 				795BABD51CB669DF0005188C /* VideoAPI */,
 				796F560F1CAA605B001B72B7 /* BusAPI */,
 			);
@@ -164,6 +180,7 @@
 			isa = PBXGroup;
 			children = (
 				793787621CB6AC3100F26A6D /* Definitions.swift */,
+				792C1FEF1CBA5DFF0055FAE5 /* Style.swift */,
 			);
 			name = Definitions;
 			sourceTree = "<group>";
@@ -183,6 +200,14 @@
 				79A6093F1CB7BE2A006A0BE1 /* VideoURLPath.swift */,
 			);
 			name = VideoAPI;
+			sourceTree = "<group>";
+		};
+		796980631EF2BED4008EFC83 /* JiraAPI */ = {
+			isa = PBXGroup;
+			children = (
+				796980641EF2BEF6008EFC83 /* JiraAPI.swift */,
+			);
+			name = JiraAPI;
 			sourceTree = "<group>";
 		};
 		796F560C1CAA34EE001B72B7 /* External Libraries */ = {
@@ -218,6 +243,7 @@
 			isa = PBXGroup;
 			children = (
 				79D7B6301C8D2E0E00C67BE1 /* Model.swift */,
+				794BDE5F1CB91D7C0087256A /* ModelDelegate.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -253,6 +279,7 @@
 				79EAAF9D1C76062D00279E3A /* AppDelegate.swift */,
 				79EAAF9F1C76062D00279E3A /* FirstViewController.swift */,
 				79EAAFA11C76062D00279E3A /* SecondViewController.swift */,
+				790BFA461CBAA6860022DD6E /* DismissableViewController.swift */,
 				79EAAFA31C76062D00279E3A /* Main.storyboard */,
 				79EAAFA61C76062D00279E3A /* Assets.xcassets */,
 				79EAAFA81C76062D00279E3A /* LaunchScreen.storyboard */,
@@ -328,6 +355,8 @@
 				79A609411CB821FC006A0BE1 /* Open.swift */,
 				793A59291CB8AC420003D32C /* Home.swift */,
 				793A592E1CB8B9B10003D32C /* Ping.swift */,
+				794BDE611CB929B70087256A /* Summarize.swift */,
+				796980661EF2C427008EFC83 /* JiraSearch.swift */,
 			);
 			name = Actions;
 			sourceTree = "<group>";
@@ -395,21 +424,24 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0720;
-				LastUpgradeCheck = 0720;
+				LastUpgradeCheck = 0800;
 				ORGANIZATIONNAME = ConradKoh;
 				TargetAttributes = {
 					79EAAF991C76062D00279E3A = {
 						CreatedOnToolsVersion = 7.2.1;
-						DevelopmentTeam = 4K47T9VGPD;
+						DevelopmentTeam = D6W5DP48V9;
+						LastSwiftMigration = 0800;
 					};
 					79EAAFAF1C76062D00279E3A = {
 						CreatedOnToolsVersion = 7.2.1;
 						DevelopmentTeam = 4K47T9VGPD;
+						LastSwiftMigration = 0800;
 						TestTargetID = 79EAAF991C76062D00279E3A;
 					};
 					79EAAFBA1C76062D00279E3A = {
 						CreatedOnToolsVersion = 7.2.1;
 						DevelopmentTeam = 4K47T9VGPD;
+						LastSwiftMigration = 0800;
 						TestTargetID = 79EAAF991C76062D00279E3A;
 					};
 				};
@@ -471,6 +503,7 @@
 				792FA2581CA3F8E60070C7BB /* BusSearch.swift in Sources */,
 				793787601CB691EC00F26A6D /* VideoSearch.swift in Sources */,
 				79D7B6311C8D2E0E00C67BE1 /* Model.swift in Sources */,
+				790BFA471CBAA6860022DD6E /* DismissableViewController.swift in Sources */,
 				79FDC3E71C76C16B001660C7 /* Parser.swift in Sources */,
 				79A609401CB7BE2A006A0BE1 /* VideoURLPath.swift in Sources */,
 				792FA2551CA3F22B0070C7BB /* String.swift in Sources */,
@@ -478,11 +511,16 @@
 				796F561B1CAA60E9001B72B7 /* BusService.swift in Sources */,
 				793787631CB6AC3100F26A6D /* Definitions.swift in Sources */,
 				79167C441CA62617000E710E /* NSTimeInterval.swift in Sources */,
+				792C1FF01CBA5DFF0055FAE5 /* Style.swift in Sources */,
+				794BDE601CB91D7C0087256A /* ModelDelegate.swift in Sources */,
 				79FDC3EB1C76C1A4001660C7 /* File.swift in Sources */,
 				79EAAFA21C76062D00279E3A /* SecondViewController.swift in Sources */,
 				793A592F1CB8B9B10003D32C /* Ping.swift in Sources */,
 				79FDC3F31C78AEF5001660C7 /* Command.swift in Sources */,
 				79EAAF9E1C76062D00279E3A /* AppDelegate.swift in Sources */,
+				794BDE621CB929B70087256A /* Summarize.swift in Sources */,
+				796980671EF2C427008EFC83 /* JiraSearch.swift in Sources */,
+				796980651EF2BEF6008EFC83 /* JiraAPI.swift in Sources */,
 				793A592D1CB8ACDF0003D32C /* URLParser.swift in Sources */,
 				795BABD71CB66A260005188C /* VideoAPI.swift in Sources */,
 				793787691CB6AEAA00F26A6D /* TableViewItem.swift in Sources */,
@@ -492,6 +530,7 @@
 				793787661CB6AD5300F26A6D /* Actionable.swift in Sources */,
 				796F56111CAA6065001B72B7 /* BusAPI.swift in Sources */,
 				796F56181CAA60D2001B72B7 /* Bus.swift in Sources */,
+				794BDE661CB93F770087256A /* NSURL.swift in Sources */,
 				793A592A1CB8AC420003D32C /* Home.swift in Sources */,
 				796F56191CAA60D2001B72B7 /* BusStop.swift in Sources */,
 				79FDC3ED1C76C1BC001660C7 /* Storage.swift in Sources */,
@@ -564,8 +603,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -609,8 +650,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -629,6 +672,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 			};
@@ -639,10 +683,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = Consolidate/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.ConradKoh.Consolidate;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kohbroco.Consolidate;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -651,10 +699,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = Consolidate/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.ConradKoh.Consolidate;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kohbroco.Consolidate;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
@@ -666,6 +718,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.ConradKoh.ConsolidateTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Consolidate.app/Consolidate";
 			};
 			name = Debug;
@@ -678,6 +731,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.ConradKoh.ConsolidateTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Consolidate.app/Consolidate";
 			};
 			name = Release;
@@ -689,6 +743,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.ConradKoh.ConsolidateUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_TARGET_NAME = Consolidate;
 				USES_XCTRUNNER = YES;
 			};
@@ -701,6 +756,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.ConradKoh.ConsolidateUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_TARGET_NAME = Consolidate;
 				USES_XCTRUNNER = YES;
 			};

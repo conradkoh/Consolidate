@@ -7,83 +7,69 @@
 //
 
 import Foundation
-public class BusSearch:NSObject, Actionable, APIDelegate{
-    public static let singleton = BusSearch();
-    public var query:String?;
-    private var _timer:NSTimer?;
-    private var _staticTimer:NSTimer?;
-    private var _services:[BusService]?;
-    public var delegate: ActionDelegate?;
-    private override init(){
+open class BusSearch:NSObject, Actionable, APIDelegate{
+    open static let singleton = BusSearch();
+    open var query:String?;
+    fileprivate var _timer:Timer?;
+    fileprivate var _staticTimer:Timer?;
+    fileprivate var _services:[BusService]?;
+    open var delegate: ActionDelegate?;
+    fileprivate override init(){
         
     }
     
     //========================================
     //Actionable Protocol
     //========================================
-    public func Execute() {
+    open func Execute() {
         let busapi = BusAPI();
         busapi.delegate = self;
         if(query != nil){
+            delegate?.ActionCallback([TableViewItem.searchingStateItem]);
             busapi.Query(query!);
             _timer?.invalidate();
-            _timer = NSTimer.scheduledTimerWithTimeInterval(10, target: self, selector: #selector(BusSearch.APIRefresh(_:)), userInfo: nil, repeats: true);
+            _timer = Timer.scheduledTimer(timeInterval: 10, target: self, selector: #selector(BusSearch.APIRefresh(_:)), userInfo: nil, repeats: true);
             _timer?.fire();
         }
     }
     
-    public func Cancel() {
+    open func Cancel() {
         self.delegate = nil;
+        _timer?.invalidate();
+        _staticTimer?.invalidate();
     }
     
-    public func QueryResponse(data: NSData) {
+    open func QueryResponse(_ data: Data) {
         let stop = BusStop(data: data);
         _services = stop.services;
         
-//        var listview = [[String:String]]();
         var listView = [TableViewItem]();
         for service in _services!{
             let nextBus = service.nextBus;
-//            var result = [String:String]();
-            
-//            result[ActionableKeys.TITLE] = nextBus?.serviceNumber;
-//            result[ActionableKeys.DETAIL] = nextBus?.timeToArrival;
-//            result[ActionableKeys.SUMMARY] = service.summary;
             let result = TableViewItem();
             result.title = nextBus?.serviceNumber;
             result.detail = nextBus?.timeToArrival;
             result.summary = service.summary;
+            result.command = Definitions.Commands.SUMMARIZE;
             listView.append(result);
         }
-        
-//        delegate?.ActionCallback(listview);
+        delegate?.ActionCallback(listView);
     }
     //======================================
     //Timed Refresh
     //======================================
-    public func APIRefresh(timer:NSTimer){
+    open func APIRefresh(_ timer:Timer){
         let busapi = BusAPI();
         busapi.delegate = self;
         busapi.Query(query!);
         _staticTimer?.invalidate();
-        _staticTimer = NSTimer.scheduledTimerWithTimeInterval(4, target: self, selector: #selector(BusSearch.staticTimerRefresh(_:)), userInfo: nil, repeats: true);
+        _staticTimer = Timer.scheduledTimer(timeInterval: 4, target: self, selector: #selector(BusSearch.staticTimerRefresh(_:)), userInfo: nil, repeats: true);
         _staticTimer?.fire();
     }
     
     
-    public func staticTimerRefresh(timer:NSTimer){
+    open func staticTimerRefresh(_ timer:Timer){
         if(_services != nil){
-//            var listview = [[String:String]]();
-//            for service in _services!{
-//                let nextBus = service.nextBus;
-//                var result = [String:String]();
-//                
-//                result[ActionableKeys.TITLE] = nextBus?.serviceNumber;
-//                result[ActionableKeys.DETAIL] = nextBus?.timeToArrival;
-//                result[ActionableKeys.SUMMARY] = service.summary;
-//                
-//                listview.append(result);
-//            }
             var listview = [TableViewItem]();
             for service in _services!{
                 let nextBus = service.nextBus;
@@ -92,7 +78,7 @@ public class BusSearch:NSObject, Actionable, APIDelegate{
                 result.title = nextBus?.serviceNumber;
                 result.detail = nextBus?.timeToArrival;
                 result.summary = service.summary;
-                
+                result.command = Definitions.Commands.SUMMARIZE;
                 listview.append(result);
             }
             
@@ -101,5 +87,5 @@ public class BusSearch:NSObject, Actionable, APIDelegate{
     }
     
     
-
+    
 }

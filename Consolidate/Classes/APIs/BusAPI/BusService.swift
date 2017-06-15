@@ -51,15 +51,15 @@ public struct BusService{
 //        }
 //    }
 //    private var _buses:[Bus] = [Bus]();
-    private var _serviceNumber:String?;
-    private var _status:String?;
-    private var _operator:String?;
-    private var _originatingID:String?;
-    private var _terminatingID:String?;
+    fileprivate var _serviceNumber:String?;
+    fileprivate var _status:String?;
+    fileprivate var _operator:String?;
+    fileprivate var _originatingID:String?;
+    fileprivate var _terminatingID:String?;
     
-    private var _nextBus:Bus?;
-    private var _subsequentBus:Bus?;
-    private var _subsequentBus2:Bus?;
+    fileprivate var _nextBus:Bus?;
+    fileprivate var _subsequentBus:Bus?;
+    fileprivate var _subsequentBus2:Bus?;
     public init(data:[String:AnyObject]){
         _serviceNumber = data[Keys.SERVICENUMBER] as? String;
         _status = data[Keys.STATUS] as? String;

@@ -8,28 +8,28 @@
 
 import Foundation
 public protocol FileDelegate{
-    func FileSaveCallback(result:String);
-    func FileErrorOccurred(error:String);
+    func FileSaveCallback(_ result:String);
+    func FileErrorOccurred(_ error:String);
 }
 
-public class File{
+open class File{
     //==============================================
     //Delegates
     //==============================================
-    public var delegate:FileDelegate?;
+    open var delegate:FileDelegate?;
     
     //==============================================
     //Variables
     //==============================================
-    private var _content:[String];
-    private let _path:String;
-    private let _directory:String;
-    private let _name:String;
+    fileprivate var _content:[String];
+    fileprivate let _path:String;
+    fileprivate let _directory:String;
+    fileprivate let _name:String;
     
     //==============================================
     //System Variables
     //==============================================
-    private let _fileManager = NSFileManager.defaultManager();
+    fileprivate let _fileManager = FileManager.default;
     
     //==============================================
     //Constructors/Initialization
@@ -40,7 +40,7 @@ public class File{
         _name = fileName;
         
         //
-        let basePaths = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true);
+        let basePaths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true);
         _directory = basePaths[0];
         _path = _directory + "/" + _name;
         
@@ -49,8 +49,8 @@ public class File{
     //==============================================
     //Private Methods
     //==============================================
-    private func FileExists() -> Bool{
-        if(_fileManager.fileExistsAtPath(_path)){
+    fileprivate func FileExists() -> Bool{
+        if(_fileManager.fileExists(atPath: _path)){
             return true;
         }
         else{
@@ -58,11 +58,11 @@ public class File{
         }
     }
     
-    private func BundleExists() -> Bool{
-        let rangeOfFileExtension = _path.rangeOfString(".plist");
-        let name = _path.substringToIndex((rangeOfFileExtension?.startIndex)!);
-        let fileFromBundle = NSBundle.mainBundle().pathForResource(name, ofType: "plist");
-        if(_fileManager.fileExistsAtPath(fileFromBundle!)){
+    fileprivate func BundleExists() -> Bool{
+        let rangeOfFileExtension = _path.range(of: ".plist");
+        let name = _path.substring(to: (rangeOfFileExtension?.lowerBound)!);
+        let fileFromBundle = Bundle.main.path(forResource: name, ofType: "plist");
+        if(_fileManager.fileExists(atPath: fileFromBundle!)){
             return true;
         }
         else{
@@ -70,16 +70,16 @@ public class File{
         }
     }
     
-    private func WriteContentsToFile(){
+    fileprivate func WriteContentsToFile(){
         //assumes that file exists at path
         let array = NSMutableArray();
         for line in _content{
-            array.addObject(line);
+            array.add(line);
         }
-        array.writeToFile(_path, atomically: true);
+        array.write(toFile: _path, atomically: true);
     }
     
-    private func LoadFileContent(){
+    fileprivate func LoadFileContent(){
         _content = [String]();
         let fileExists = FileExists();
         var shouldLoad = true;
@@ -109,11 +109,11 @@ public class File{
     //Public Methods
     //==============================================
     
-    public func SetFileContent(content:[String]){
+    open func SetFileContent(_ content:[String]){
         _content = content;
     }
     
-    public func Save(){
+    open func Save(){
         let fileExists = FileExists();
         var status:String;
         if(fileExists){
@@ -126,10 +126,10 @@ public class File{
         delegate?.FileSaveCallback(status);
     }
     
-    public class Constants{
-        public static let SAVE_SUCCEEDED = "Save succeeded";
-        public static let LOAD_SUCCEEDED = "Load succeeded";
-        public static let ERROR_FILEDOESNOTEXIST = "Error: File does not exist";
-        public static let ERROR_FILEMISSINGFROMBUNDLE = "Error: Try adding %s to bundle";
+    open class Constants{
+        open static let SAVE_SUCCEEDED = "Save succeeded";
+        open static let LOAD_SUCCEEDED = "Load succeeded";
+        open static let ERROR_FILEDOESNOTEXIST = "Error: File does not exist";
+        open static let ERROR_FILEMISSINGFROMBUNDLE = "Error: Try adding %s to bundle";
     }
 }

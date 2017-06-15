@@ -7,29 +7,29 @@
 //
 
 import Foundation
-public class Command:Actionable{
-    public var delegate:ActionDelegate?;
-//    override init(){
-//        
-//    }
+open class Command:Actionable{
+  open var delegate:ActionDelegate?;
+  //    override init(){
+  //
+  //    }
+  
+  open func Execute() {
+    //        var listview = [[String:String]]();
+    //        var result = [String:String]();
     
-    public func Execute() {
-//        var listview = [[String:String]]();
-//        var result = [String:String]();
-        
-        
-//        result[Actionable.Keys.TITLE] = Constants.EXECUTE_SUCCESS;
-//        result[Actionable.Keys.DETAIL] = "detail"
-//        listview.append(result);
-//        delegate?.ActionCallback(listview);
-    }
     
-    public func Cancel(){
-        
-    }
+    //        result[Actionable.Keys.TITLE] = Constants.EXECUTE_SUCCESS;
+    //        result[Actionable.Keys.DETAIL] = "detail"
+    //        listview.append(result);
+    //        delegate?.ActionCallback(listview);
+  }
+  
+  open func Cancel(){
     
-    public class Constants{
-        public static let EXECUTE_SUCCESS = "Command executed";
-        public static let EXECUTE_FAILED = "Command execute failed";
-    }
+  }
+  
+  open class Constants{
+    open static let EXECUTE_SUCCESS = "Command executed";
+    open static let EXECUTE_FAILED = "Command execute failed";
+  }
 }

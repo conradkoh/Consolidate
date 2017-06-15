@@ -8,9 +8,9 @@
 
 import Foundation
 public protocol APIDelegate{
-    func QueryResponse(data:NSData);
+    func QueryResponse(_ data:Data);
 }
 public protocol API{
     var delegate:APIDelegate?{get set};
-    func Query(query:String);
+    func Query(_ query:String);
 }

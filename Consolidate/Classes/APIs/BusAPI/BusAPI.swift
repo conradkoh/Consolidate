@@ -10,19 +10,20 @@ import Foundation
 //==============================================
 //Bus API
 //==============================================
-public class BusAPI:API{
-    public var delegate:APIDelegate?;
-    public func Query(query:String) {
+open class BusAPI:API{
+    open var delegate:APIDelegate?;
+    open func Query(_ query:String) {
         //Check string for white spaces
         
-        var checkedQuery = query.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet());
-        let tokens = checkedQuery.componentsSeparatedByCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet());
+        var checkedQuery = query.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines);
+        let tokens = checkedQuery.components(separatedBy: CharacterSet.whitespacesAndNewlines);
         if tokens.count > 0{
             checkedQuery = tokens[0];
             //Begin request
-            let url = NSURL.init(string: Constants.URI + Constants.path + Keys.BUSSTOPID + checkedQuery + Keys.SST);
+            if let url = URL.init(string: Constants.URI + Constants.path + Keys.BUSSTOPID + checkedQuery + Keys.SST){
             //let url = NSURL.init(string: "http://datamall2.mytransport.sg/ltaodataservice/BusArrival?BusStopID=83139");
-            let request = NSMutableURLRequest.init(URL: url!);
+            
+            let request = NSMutableURLRequest.init(url: url);
             request.setValue(Values.ACCOUNTKEY, forHTTPHeaderField: Keys.ACCOUNTKEY);
             request.setValue(Values.UNIQUEUSERID, forHTTPHeaderField: Keys.UNIQUEUSERID);
             request.setValue(Values.ACCEPT, forHTTPHeaderField: Keys.ACCEPT);
@@ -41,7 +42,7 @@ public class BusAPI:API{
             //        };
             
             
-            let task = NSURLSession.sharedSession().dataTaskWithRequest(request, completionHandler: {
+            let task = URLSession.shared.dataTask(with: request as URLRequest, completionHandler: {
                 (data,response,error) in
                 if(data != nil){
                     //let htmlData = String(data: data!, encoding: NSUTF8StringEncoding);
@@ -56,7 +57,7 @@ public class BusAPI:API{
             //            self.delegate?.QueryResponse(htmlData!);
             //        })
             task.resume();
-
+            }
         }
     }
     public struct Constants{

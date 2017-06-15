@@ -7,18 +7,14 @@
 //
 
 import Foundation
-open class VideoAPI:API{
+open class JiraAPI:API{
     open var delegate:APIDelegate?;
     open func Query(_ query: String) {
         let tokens = query.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
-                          .components(separatedBy: CharacterSet.whitespacesAndNewlines);
+            .components(separatedBy: CharacterSet.whitespacesAndNewlines);
         let checkedQuery = tokens[0];
-        //let url = NSURL.init(string: Constants.URI + Constants.path + Keys.BUSSTOPID + query + Keys.SST);
         let url = URL.init(string: Constants.IP_ADDRESS + Constants.PORT + checkedQuery);
         let request = URLRequest.init(url: url!);
-//        request.setValue(Values.ACCOUNTKEY, forHTTPHeaderField: Keys.ACCOUNTKEY);
-//        request.setValue(Values.UNIQUEUSERID, forHTTPHeaderField: Keys.UNIQUEUSERID);
-//        request.setValue(Values.ACCEPT, forHTTPHeaderField: Keys.ACCEPT);
         
         
         let task = URLSession.shared.dataTask(with: request, completionHandler: {
@@ -32,7 +28,7 @@ open class VideoAPI:API{
         })
         
         task.resume();
-
+        
     }
     
     open class Constants{

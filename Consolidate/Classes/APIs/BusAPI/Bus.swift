@@ -11,17 +11,17 @@ import Foundation
 //Bus Delegate
 //==============================================
 public protocol BusDelegate{
-    func NextBusTiming(timeToArrival:String);
+    func NextBusTiming(_ timeToArrival:String);
 }
 
 //==============================================
 //Bus Object
 //==============================================
-public class Bus{
+open class Bus{
     //==============================================
     //Variables
     //==============================================
-    public var delegate:BusDelegate?;
+    open var delegate:BusDelegate?;
     //    private var _timer:NSTimer?;
     //==============================================
     //Raw Data
@@ -49,8 +49,8 @@ public class Bus{
 //    let visitNumber:String?;
 //    let feature:String?;
     
-    var eta:NSDate?;
-    public var timeToArrival:String?{get{
+    var eta:Date?;
+    open var timeToArrival:String?{get{
         let interval = eta?.timeIntervalSinceNow;
         if(interval != nil){
             return interval?.InHoursAndMinutes();
@@ -77,10 +77,10 @@ public class Bus{
         feature = data[Keys.FEATURE];
         
         if(estimatedArrival != nil){
-            let dateFormatter = NSDateFormatter();
-            dateFormatter.timeZone = NSCalendar.currentCalendar().timeZone;
+            let dateFormatter = DateFormatter();
+            dateFormatter.timeZone = Calendar.current.timeZone;
             dateFormatter.dateFormat = Constants.DATEFORMAT;
-            eta = dateFormatter.dateFromString(estimatedArrival!);
+            eta = dateFormatter.date(from: estimatedArrival!);
         }
     }
 

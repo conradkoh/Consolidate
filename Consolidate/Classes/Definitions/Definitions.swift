@@ -7,26 +7,39 @@
 //
 
 import Foundation
-public class Definitions{
-//    public class ViewTypes{
-//        //View types determines the expected type of action for selecting a specific item in the view
-//        public static let ACTION = "action";
-//        public static let SUMMARY = "summary";
-//    }
+open class Definitions{
+    open static let AVPLAYER_FILE_FORMATS = [".mp4",".mp3",".avi"];
     
-    public class Commands{
-        public static let VIDEO = "$video:";
-        public static let OPEN = "$open:";
-        public static let HOME = "$home:";
-        public static let PING = "$ping:";
+    open class Commands{
+        open static let VIDEO = "$video:";
+        open static let OPEN = "$open:";
+        open static let HOME = "$home:";
+        open static let PING = "$ping:";
+        open static let JIRA = "$jira:";
+        open static let SUMMARIZE = "$summarize";
     }
     
+    
+    
     public enum ACTIONTYPE{
-        case VIDEO;
-        case BUS;
-        case OPEN;
-        case HOME;
-        case PING;
-        case INVALID;
+        case command;
+        case query;
+    }
+    public enum COMMANDTYPE{
+        case video;
+        case bus;
+        case open;
+        case home;
+        case ping;
+        case summarize;
+        case invalid;
+    };
+    
+    public enum QUERYTYPE{
+        case video;
+        case bus;
+        case home;
+        case invalid;
+        case jira;
     };
 }

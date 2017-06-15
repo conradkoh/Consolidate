@@ -7,60 +7,49 @@
 //
 
 import Foundation
-public class Parser{
+open class Parser{
     //==============================================
     //Static Variables
     //==============================================
-    public static let singleton:Parser = Parser();;
+    open static let singleton:Parser = Parser();
     
     //==============================================
     //Constructors
     //==============================================
-    private init(){
+    fileprivate init(){
         
     }
     
     //==============================================
     //Static Functions
     //==============================================
-    public static func Normalize(query:String) -> String{
-        let checkedQuery = query.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet());
-        let tokens = checkedQuery.componentsSeparatedByCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet());
-        if(tokens.count > 0){
-            let result = tokens[0];
-            return result;
-        }
-        return "";
-        
-    }
-    public static func actionFromQuery(query:String) -> Actionable{
-        let checkedQuery = query.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet());
-        let actionType = self.RetrieveActionType(checkedQuery);
+    
+    open static func actionFromQuery(_ query:String) -> Actionable{
+        let checkedQuery = query.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines);
+        let queryType = self.RetrieveQueryType(checkedQuery);
         var action:Actionable = BusSearch.singleton;
-        switch(actionType){
-        case Definitions.ACTIONTYPE.BUS:
+        switch(queryType){
+        case Definitions.QUERYTYPE.bus:
             let search = BusSearch.singleton;
             search.query = checkedQuery;
             action = search;
             break;
-        case Definitions.ACTIONTYPE.VIDEO:
+        case Definitions.QUERYTYPE.video:
             let videoSearch = VideoSearch.singleton;
-            let cmdRange = checkedQuery.rangeOfString(Definitions.Commands.VIDEO);
-            let args = checkedQuery.substringFromIndex((cmdRange?.endIndex)!);
+            let cmdRange = checkedQuery.range(of: Definitions.Commands.VIDEO);
+            let args = checkedQuery.substring(from: (cmdRange?.upperBound)!);
             videoSearch.query = args;
             action = videoSearch;
             break;
-        case Definitions.ACTIONTYPE.OPEN:
-            let open = Open.singleton;
-            let cmdRange = checkedQuery.rangeOfString(Definitions.Commands.OPEN);
-            let args = checkedQuery.substringFromIndex((cmdRange?.endIndex)!);
-            open.path = args;
-            action = open;
-            break;
             
-        case Definitions.ACTIONTYPE.HOME:
+        case Definitions.QUERYTYPE.home:
             let home = Home();
             action = home;
+            break;
+            
+        case Definitions.QUERYTYPE.jira:
+            let jira = JiraSearch()
+            action = jira;
             break;
             
         default:
@@ -71,45 +60,49 @@ public class Parser{
         return action;
     }
     
-    
-    public static func actionFromCommand(command:String) -> Actionable{
-        let checkedQuery = command.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet());
-        let actionType = self.RetrieveActionType(checkedQuery);
+    open static func actionFromCommand(_ command:String, index:Int) -> Actionable{
+        let checkedCommand = command.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines);
+        let commandType = self.RetrieveCommandType(checkedCommand);
         var action:Actionable = BusSearch.singleton;
-        switch(actionType){
+        switch(commandType){
 //        case Definitions.ACTIONTYPE.BUS:
 //            let search = BusSearch.singleton;
 //            search.query = checkedQuery;
 //            action = search;
 //            break;
-        case Definitions.ACTIONTYPE.VIDEO:
+        case Definitions.COMMANDTYPE.video:
             let videoSearch = VideoSearch.singleton;
-            let cmdRange = checkedQuery.rangeOfString(Definitions.Commands.VIDEO);
-            let args = checkedQuery.substringFromIndex((cmdRange?.endIndex)!);
+            let cmdRange = checkedCommand.range(of: Definitions.Commands.VIDEO);
+            let args = checkedCommand.substring(from: (cmdRange?.upperBound)!);
             videoSearch.query = args;
             action = videoSearch;
             break;
-        case Definitions.ACTIONTYPE.OPEN:
+        case Definitions.COMMANDTYPE.open:
             let open = Open.singleton;
-            let cmdRange = checkedQuery.rangeOfString(Definitions.Commands.OPEN);
-            let args = checkedQuery.substringFromIndex((cmdRange?.endIndex)!);
+            let cmdRange = checkedCommand.range(of: Definitions.Commands.OPEN);
+            let args = checkedCommand.substring(from: (cmdRange?.upperBound)!);
             open.path = args;
             action = open;
             break;
             
-        case Definitions.ACTIONTYPE.PING:
+        case Definitions.COMMANDTYPE.ping:
             let ping = Ping();
-            let cmdRange = checkedQuery.rangeOfString(Definitions.Commands.PING);
-            let args = checkedQuery.substringFromIndex((cmdRange?.endIndex)!);
+            let cmdRange = checkedCommand.range(of: Definitions.Commands.PING);
+            let args = checkedCommand.substring(from: (cmdRange?.upperBound)!);
             ping.ip = args;
             action = ping;
             break;
             
-        case Definitions.ACTIONTYPE.HOME:
+        case Definitions.COMMANDTYPE.home:
             let home = Home();
             action = home;
             break;
             
+        case Definitions.COMMANDTYPE.summarize:
+            let summarize = Summarize();
+            summarize.tableViewItemIndex = index;
+            action = summarize;
+            break;
         default:
             break;
             
@@ -118,33 +111,62 @@ public class Parser{
         return action;
     }
     
-    public static func RetrieveActionType(input:String) ->Definitions.ACTIONTYPE{
-        let busRng = input.rangeOfString(Constants.REGEX_BUS, options: .RegularExpressionSearch);
-        if(busRng?.startIndex == input.startIndex){
-            return Definitions.ACTIONTYPE.BUS;
-        }
-        let videoRng = input.rangeOfString(Definitions.Commands.VIDEO);
-        if(videoRng?.startIndex == input.startIndex){
-            return Definitions.ACTIONTYPE.VIDEO;
+    open static func RetrieveQueryType(_ input:String) ->Definitions.QUERYTYPE{
+        let busRng = input.range(of: Constants.REGEX_BUS, options: .regularExpression);
+        if(busRng?.lowerBound == input.startIndex){
+            return Definitions.QUERYTYPE.bus;
         }
         
-        let openRng = input.rangeOfString(Definitions.Commands.OPEN);
-        if(openRng?.startIndex == input.startIndex){
-            return Definitions.ACTIONTYPE.OPEN;
+        let jiraRng = input.range(of: Constants.REGEX_JIRA, options: .regularExpression);
+        if(jiraRng?.lowerBound == input.startIndex){
+            return Definitions.QUERYTYPE.jira;
         }
         
-        let pingRng = input.rangeOfString(Definitions.Commands.PING);
-        if(pingRng?.startIndex == input.startIndex){
-            return Definitions.ACTIONTYPE.PING;
+        let videoRng = input.range(of: Definitions.Commands.VIDEO);
+        if(videoRng?.lowerBound == input.startIndex){
+            return Definitions.QUERYTYPE.video;
         }
-        
-        let homeRng = input.rangeOfString(Definitions.Commands.HOME);
-        if(homeRng?.startIndex == input.startIndex){
-            return Definitions.ACTIONTYPE.HOME;
+                
+        let homeRng = input.range(of: Definitions.Commands.HOME);
+        if(homeRng?.lowerBound == input.startIndex){
+            return Definitions.QUERYTYPE.home;
         }
-        return Definitions.ACTIONTYPE.BUS;
+        return Definitions.QUERYTYPE.bus;
     }
     
+    
+    open static func RetrieveCommandType(_ input:String) ->Definitions.COMMANDTYPE{
+        let busRng = input.range(of: Constants.REGEX_BUS, options: .regularExpression);
+        if(busRng?.lowerBound == input.startIndex){
+            return Definitions.COMMANDTYPE.bus;
+        }
+        let videoRng = input.range(of: Definitions.Commands.VIDEO);
+        if(videoRng?.lowerBound == input.startIndex){
+            return Definitions.COMMANDTYPE.video;
+        }
+        
+        let openRng = input.range(of: Definitions.Commands.OPEN);
+        if(openRng?.lowerBound == input.startIndex){
+            return Definitions.COMMANDTYPE.open;
+        }
+        
+        let pingRng = input.range(of: Definitions.Commands.PING);
+        if(pingRng?.lowerBound == input.startIndex){
+            return Definitions.COMMANDTYPE.ping;
+        }
+        
+        let homeRng = input.range(of: Definitions.Commands.HOME);
+        if(homeRng?.lowerBound == input.startIndex){
+            return Definitions.COMMANDTYPE.home;
+        }
+        
+        let summarizeRng = input.range(of: Definitions.Commands.SUMMARIZE);
+        if(summarizeRng?.lowerBound == input.startIndex){
+            return Definitions.COMMANDTYPE.summarize;
+        }
+        return Definitions.COMMANDTYPE.bus;
+    }
+
     //==============================================
     //Public Functions
     //==============================================
@@ -159,7 +181,8 @@ public class Parser{
     
     
     
-    public class Constants{
-        public static let REGEX_BUS = "[0-9][0-9][0-9][0-9][0-9]";
+    open class Constants{
+        open static let REGEX_BUS = "[0-9][0-9][0-9][0-9][0-9]";
+        open static let REGEX_JIRA = "jira:";
     }
 }

@@ -7,28 +7,28 @@
 //
 
 import Foundation
-public class VideoURLPath{
-    private var _value:String;
+open class VideoURLPath{
+    fileprivate var _value:String;
     public init(string:String){
         _value = string;
     }
     
-    public func normalized() -> String?{
+    open func normalized() -> String?{
         return Normalize(_value);
     }
     
-    private func Normalize(input:String) -> String?{
-        let input_checked = input.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet());
-        let tokens = input_checked.componentsSeparatedByCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet());
+    fileprivate func Normalize(_ input:String) -> String?{
+        let input_checked = input.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines);
+        let tokens = input_checked.components(separatedBy: CharacterSet.whitespacesAndNewlines);
         if(tokens.count > 0){
             let url_seed = tokens[0];
-            let zeroPathRng = url_seed.rangeOfString(Constants.REGEX_ZERO_PATH, options: .RegularExpressionSearch);
+            let zeroPathRng = url_seed.range(of: Constants.REGEX_ZERO_PATH, options: .regularExpression);
             if(zeroPathRng == nil){
                 return url_seed;
             }
             else{
-                let prefix = url_seed.substringToIndex(zeroPathRng!.startIndex);
-                let suffix = url_seed.substringFromIndex(zeroPathRng!.endIndex);
+                let prefix = url_seed.substring(to: zeroPathRng!.lowerBound);
+                let suffix = url_seed.substring(from: zeroPathRng!.upperBound);
                 let result = prefix + suffix;
                 return Normalize(result);
             }
@@ -36,7 +36,7 @@ public class VideoURLPath{
         return nil;
     }
     
-    public class Constants{
-        public static let REGEX_ZERO_PATH = "(?<=\\/)[^\\/]+\\/\\.\\.\\/";
+    open class Constants{
+        open static let REGEX_ZERO_PATH = "(?<=\\/)[^\\/]+\\/\\.\\.\\/";
     }
 }

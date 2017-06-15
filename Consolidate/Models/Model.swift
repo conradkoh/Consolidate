@@ -8,140 +8,129 @@
 
 import Foundation
 import EventKitUI
-public class Model:NSObject, UITableViewDataSource, ActionDelegate{
-    public static let singleton = Model();
-    public var tableView:UITableView?;
+import AVFoundation
+open class Model:NSObject, UITableViewDataSource, ActionDelegate{
+    open static let singleton = Model();
+    open var tableView:UITableView?;
+    open var delegate:ModelDelegate?;
+    
 //    private var _view = [[String:String]]();
-    private var _view = [TableViewItem]();
+    fileprivate var _view = [TableViewItem]();
 //    private var _context:String?;
     internal var activeView:SummaryViewController?;
-    internal var activeViewIndex:Int?;
+    internal var activeTableViewItem:TableViewItem?;
+//    internal var activeViewIndex:Int?;
     
     //==============================================
     //Private Variables
     //==============================================
-    private var activeAction:Actionable?;
+    fileprivate var activeAction:Actionable?;
     
-    private override init(){}
+    fileprivate override init(){}
     
     //==============================================
     //UITableViewDataSource
     //==============================================
     
-    public func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    open func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return _view.count;
     }
     
-    public func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let actionCell = UITableViewCell.init(style: .Subtitle, reuseIdentifier: Constants.ACTION_CELL_ID);
-        let tableViewItem = _view[indexPath.row];
+    open func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let actionCell = UITableViewCell.init(style: .subtitle, reuseIdentifier: Constants.ACTION_CELL_ID);
+        let tableViewItem = _view[(indexPath as NSIndexPath).row];
+//        actionCell.selectionStyle = .Default;
         actionCell.textLabel!.text = tableViewItem.title;
         actionCell.detailTextLabel?.text = tableViewItem.detail;
+        actionCell.textLabel?.textColor = UIColor.white;
+        actionCell.detailTextLabel?.textColor = UIColor.white;
+        
+        actionCell.contentView.backgroundColor = UIColor.clear;
+        actionCell.backgroundColor = UIColor.clear;
+        
+        actionCell.selectedBackgroundView = UIView();
+        actionCell.selectedBackgroundView?.backgroundColor = Style.darkOverlayColor;
         return actionCell;
     }
 
     //==============================================
     //Public Interface
     //==============================================
-    public func Query(query:String){
+    open func Query(_ query:String){
         activeAction?.Cancel(); //Cancel existing action
-        let checkedQuery = Parser.Normalize(query);
+        let checkedQuery = query;
         activeAction = Parser.actionFromQuery(checkedQuery);
         activeAction?.delegate = self;
         activeAction?.Execute();
     }
     
-    public func Command(command:String){
+    open func Command(_ command:String){
         activeAction?.Cancel(); //Cancel existing action
-        let checkedCommand = Parser.Normalize(command);
-        activeAction = Parser.actionFromCommand(checkedCommand);
+        activeAction = Parser.actionFromCommand(command, index: -1);
         activeAction?.delegate = self;
         activeAction?.Execute();
     }
-    public func shouldPresentAtIndex(index:Int) -> Bool{
-        if(index < _view.count){
-            let subQuery = _view[index].command;
-            if(subQuery != nil){
-                let cmdType = Parser.RetrieveActionType(subQuery!);
-                if(cmdType == Definitions.ACTIONTYPE.OPEN){
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
     
-    public func pathForPresentationAtIndex(index:Int) -> String{
+    open func Select(_ index:Int){
         if(index < _view.count){
-            return _view[index].detail!; //detail is set to contain the filePath in Open Action
-        }
-        return "";
-    }
-    public func isQueryAtIndex(index:Int) -> Bool{
-        if(index < _view.count){
-            if(_view[index].query != nil){
-                return true;
-            }
-        }
-        return false;
-    }
-    
-    public func isCommandAtIndex(index:Int) -> Bool{
-        if(index < _view.count){
-            if(_view[index].command != nil){
-                return true;
-            }
-        }
-        return false;
-    }
-    
-    public func performQueryAtIndex(index:Int){
-        if(index < _view.count){
-            let item = _view[index];
-            let query = item.command;
-            if(query != nil){
-                self.Query(query!);
-            }
-        }
-    }
-    
-    public func performCommandAtIndex(index:Int){
-        if(index < _view.count){
-            let item = _view[index];
-            let command = item.command;
+            let tableViewItem = _view[index];
+            let command = tableViewItem.command;
             if(command != nil){
-                self.Command(command!);
+                activeAction = Parser.actionFromCommand(command!, index: index);
+                activeAction?.delegate = self;
+                activeAction?.Execute();
             }
         }
     }
     
-    public func summaryAtIndex(index:Int) -> TableViewItem?{
-        if(index < _view.count){
-            return _view[index];
-        }
-        return nil;
-    }
+
     
-    public func setActiveIndex(index:Int){
-        if(index < _view.count){
-            activeViewIndex = index;
-        }
+    open func setActiveTableViewItem(_ tableViewItem:TableViewItem){
+        activeTableViewItem = tableViewItem;
     }
     
     //==============================================
     //Action Delegate
     //==============================================
     
-    public func ActionCallback(result: [TableViewItem]) {
-        _view = result;
-        dispatch_async(dispatch_get_main_queue(), {
+    open func ActionCallback(_ result: [TableViewItem]) {
+        if(result.count > 0){
+            _view = result;
+        }
+        else{
+            _view = [TableViewItem.emptyQueryItem];
+        }
+        //reload the table
+        DispatchQueue.main.async(execute: {
             self.tableView?.reloadData();
-            if(self.activeViewIndex != nil){
-                let summary = self._view[self.activeViewIndex!];
-                self.activeView?.title = summary.title;
-                self.activeView?.content = summary.summary;
+            if let item = self.activeTableViewItem{
+                if let view = self.activeView{
+                    view.title = item.title;
+                    view.content = item.summary;
+                }
             }
         })
+    }
+    
+    open func Summarize(_ tableViewItemIndex:Int) {
+        if(tableViewItemIndex < _view.count){
+            let tableViewItem = _view[tableViewItemIndex];
+            delegate?.PresentSummaryViewController(tableViewItem);
+            var x = 1;
+        }
+    }
+    
+    open func OpenFile(_ url_string:String) {
+        let url = URL.init(string: url_string);
+        if(url != nil){
+            let file_ext = URLParser.FileExtensionFromURL(url_string);
+            if(Definitions.AVPLAYER_FILE_FORMATS.index(of: file_ext!) != nil){
+                delegate?.OpenMP4(url!);
+            }
+            else{
+                delegate?.PresentSafariViewController(url!);
+            }
+        }
         
     }
     

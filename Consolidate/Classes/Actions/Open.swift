@@ -7,10 +7,10 @@
 //
 
 import Foundation
-public class Open:Actionable{
-    public var delegate: ActionDelegate?
-    public static let singleton = Open();
-    public var path:String{
+open class Open:Actionable{
+    open var delegate: ActionDelegate?
+    open static let singleton = Open();
+    open var path:String{
         get{
             return _path;
         }
@@ -19,21 +19,30 @@ public class Open:Actionable{
         }
     }
     
-    private var _path:String = "";
+    fileprivate var _path:String = "";
     
     
-    private init(){}
+    fileprivate init(){}
     
-    public func Execute() {
-        let viewItem = TableViewItem();
-        let cmd = Definitions.Commands.OPEN + _path;
-        viewItem.title = cmd;
-        viewItem.detail = _path;
-        viewItem.command = cmd;
+    open func Execute() {
+//        let viewItem = TableViewItem();
+//        let cmd = Definitions.Commands.OPEN + _path;
+//        viewItem.title = cmd;
+//        viewItem.detail = _path;
+//        viewItem.command = cmd;
         
-        delegate?.ActionCallback([viewItem]);
+        
+//        let url = NSURL(string: _path);
+//        if(url != nil){
+//            delegate?.OpenURL(url!);
+//        }
+        
+        
+        //delegate?.ActionCallback([viewItem]);
+        
+        delegate?.OpenFile(_path);
     }
-    public func Cancel() {
+    open func Cancel() {
         
     }
 }

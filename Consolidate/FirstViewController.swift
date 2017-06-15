@@ -8,15 +8,17 @@
 
 import UIKit
 import SafariServices
-
+import WebKit
+import AVKit
+import AVFoundation
 //HACK:
 extension SFSafariViewController{
-    override public func prefersStatusBarHidden() -> Bool {
+    override open var prefersStatusBarHidden : Bool {
         return true;
     }
 }
-class FirstViewController: UIViewController, UITableViewDelegate, UITextFieldDelegate {
-
+class FirstViewController: UIViewController {
+    
     //==============================================
     //Outlets
     //==============================================
@@ -33,7 +35,7 @@ class FirstViewController: UIViewController, UITableViewDelegate, UITextFieldDel
     //==============================================
     //System variables
     //==============================================
-    let notificationCenter = NSNotificationCenter.defaultCenter();
+    let notificationCenter = NotificationCenter.default;
     
     //==============================================
     //Variables
@@ -47,57 +49,61 @@ class FirstViewController: UIViewController, UITableViewDelegate, UITextFieldDel
         super.viewDidLoad()
         Initialize();
         _model.Command(Definitions.Commands.HOME);
-        // Do any additional setup after loading the view, typically from a nib.
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
-        textField.endEditing(true);
-        textField.text = "";
-        _model.Command(Definitions.Commands.HOME);
-        return true;
-    }
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         UITextField_Input.becomeFirstResponder();
     }
     
+    override var preferredStatusBarStyle : UIStatusBarStyle {
+        return UIStatusBarStyle.lightContent;
+    }
     //==============================================
     //Notification Observers
     //==============================================
     var count = 1;
-    func keyboardWillShow(notification:NSNotification){
-        let keyboardFrame = (notification.userInfo![UIKeyboardFrameEndUserInfoKey] as? NSValue)?.CGRectValue();
+    func keyboardWillShow(_ notification:Notification){
+        let keyboardFrame = ((notification as NSNotification).userInfo![UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue;
         let kbheight = keyboardFrame!.height;
         let tabbarheight = self.tabBarController?.tabBar.frame.size.height;
         self.modifyConstaint(NSLayoutConstraint_InputView_Bottom, toValue: kbheight - tabbarheight!);
     }
     
-    func keyboardWillHide(notification:NSNotification){
+    func keyboardWillHide(_ notification:Notification){
         self.modifyConstaint(NSLayoutConstraint_InputView_Bottom, toValue: 0);
     }
     
-    func modifyConstaint(constraint:NSLayoutConstraint, toValue value:CGFloat){
+    func modifyConstaint(_ constraint:NSLayoutConstraint, toValue value:CGFloat){
         //constraint.constant = value;
         self.view.layoutIfNeeded()
-        UIView.animateWithDuration(0.1, animations: {
+        UIView.animate(withDuration: 0.1, animations: {
             constraint.constant = value
             self.view.layoutIfNeeded()
         })
     }
     
-    func applicationBecameActive(notification:NSNotification){
+    func applicationBecameActive(_ notification:Notification){
         UITextField_Input.becomeFirstResponder();
     }
     //==============================================
     //Targets
     //==============================================
     
-    func textFieldDidChange(textField:UITextField){
-        _model.Query(textField.text!);
+    func textFieldDidChange(_ textField:UITextField){
+        if(textField.text == ""){
+            _model.Command(Definitions.Commands.HOME);
+        }
+        else{
+            if let query = textField.text{
+                _model.Query(query);
+            }
+        }
+        
     }
     
     //==============================================
@@ -112,17 +118,18 @@ class FirstViewController: UIViewController, UITableViewDelegate, UITextFieldDel
     }
     
     func InitializeObservers(){
-        notificationCenter.addObserver(self, selector: #selector(self.keyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil);
-        notificationCenter.addObserver(self, selector: #selector(self.keyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object: nil);
-        notificationCenter.addObserver(self, selector: #selector(self.applicationBecameActive(_:)), name: UIApplicationDidBecomeActiveNotification, object: nil);
+        notificationCenter.addObserver(self, selector: #selector(self.keyboardWillShow(_:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil);
+        notificationCenter.addObserver(self, selector: #selector(self.keyboardWillHide(_:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil);
+        notificationCenter.addObserver(self, selector: #selector(self.applicationBecameActive(_:)), name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil);
     }
     
     func InitializeTargets(){
-        UITextField_Input.addTarget(self, action: #selector(FirstViewController.textFieldDidChange(_:)), forControlEvents: UIControlEvents.EditingChanged);
+        UITextField_Input.addTarget(self, action: #selector(FirstViewController.textFieldDidChange(_:)), for: UIControlEvents.editingChanged);
     }
     
     func InitializeDelegates(){
         UITextField_Input.delegate = self;
+        _model.delegate = self;
     }
     
     func InitializeModel(){
@@ -133,6 +140,8 @@ class FirstViewController: UIViewController, UITableViewDelegate, UITextFieldDel
     
     func InitializeUI(){
         UITextField_Input.clearsOnBeginEditing = true;
+        UITableView_Results.backgroundView = nil; //enables setting of color for tableview
+        UITableView_Results.backgroundColor = UIColor.clear;
     }
     
     //==============================================
@@ -141,53 +150,80 @@ class FirstViewController: UIViewController, UITableViewDelegate, UITextFieldDel
     
     
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        tableView.deselectRowAtIndexPath(indexPath, animated: true);
-        let isQuery = _model.isQueryAtIndex(indexPath.row);
-        let isCommand = _model.isCommandAtIndex(indexPath.row);
-        if(isQuery){
-            _model.performQueryAtIndex(indexPath.row);
-        }
-        else if(isCommand){
-            let shouldPresent = _model.shouldPresentAtIndex(indexPath.row);
-            if(shouldPresent){
-                let url_string = _model.pathForPresentationAtIndex(indexPath.row);
-                let checked_url = URLParser.Normalize(url_string);
-                let url = NSURL(string: checked_url);
-                let vc = SFSafariViewController(URL: url!);
-                vc.modalPresentationStyle = .OverFullScreen;
-                vc.modalPresentationCapturesStatusBarAppearance = true;
-                
-                self.presentViewController(vc, animated: true, completion: nil)
-            }
-            else{
-                _model.performCommandAtIndex(indexPath.row);
-            }
-            
-        }
-        else{
-            let vc = SummaryViewController();
-            let summary = _model.summaryAtIndex(indexPath.row);
-            if(summary != nil){
-                //vc.title = summary![ActionableKeys.TITLE];
-                //vc.content = summary![ActionableKeys.SUMMARY];
-                vc.title = summary?.title;
-                vc.content = summary?.summary;
-                _model.activeViewIndex = indexPath.row;
-                _model.activeView = vc;
-                self.presentViewController(vc, animated: true, completion: {
-                });
-            }
-        }
-        
-        
-    }
-//    //==============================================
-//    //API Delegate
-//    //==============================================
-//    func QueryResponse(data: NSData) {
-//        //UITextField_Input.text = data;
-//        let busstop = BusStop(data: data);
-//    }
+    
+    //    //==============================================
+    //    //API Delegate
+    //    //==============================================
+    //    func QueryResponse(data: NSData) {
+    //        //UITextField_Input.text = data;
+    //        let busstop = BusStop(data: data);
+    //    }
 }
 
+extension FirstViewController:UITableViewDelegate{
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true);
+        _model.Select((indexPath as NSIndexPath).row);
+    }
+    
+}
+//MARK: - UITextFieldDelegate
+extension FirstViewController:UITextFieldDelegate{
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        if(textField.text == ""){
+            _model.Command(Definitions.Commands.HOME);
+            textField.endEditing(true);
+        }
+        else{
+            if let cmd = textField.text{
+                _model.Command(cmd);
+                textField.endEditing(true);
+                textField.text = "";
+            }
+        }
+        return true;
+    }
+}
+
+//MARK: - ModelDelegate
+extension FirstViewController:ModelDelegate{
+    
+    //==============================================
+    //Model Delegate
+    //==============================================
+    
+    func PresentSafariViewController(_ url: URL) {
+        let vc = SFSafariViewController(url: url);
+        vc.modalPresentationStyle = .overFullScreen;
+        vc.modalPresentationCapturesStatusBarAppearance = true;
+        self.present(vc, animated: true, completion: nil)
+        
+        //        let vc = WebPageViewController();
+        //        vc.url = url;
+        //        //        vc.LoadWebPage();
+        //        vc.modalPresentationStyle = .OverFullScreen;
+        //        vc.modalPresentationCapturesStatusBarAppearance = true;
+        //        self.presentViewController(vc, animated: true, completion: nil)
+        
+    }
+    
+    func PresentSummaryViewController(_ tableViewItem:TableViewItem?) {
+        let vc = SummaryViewController();
+        vc.title = tableViewItem?.title;
+        vc.content = tableViewItem?.summary;
+        _model.activeTableViewItem = tableViewItem;
+        _model.activeView = vc;
+        self.present(vc, animated: true, completion: {
+            self._model.activeTableViewItem = nil;
+        });
+    }
+    
+    //Opening File Extensions
+    func OpenMP4(_ url: URL) {
+        let vc = AVPlayerViewController();
+        vc.player = AVPlayer(url: url);
+        vc.player?.play();
+        self.present(vc, animated: true, completion: nil);
+    }
+    
+}

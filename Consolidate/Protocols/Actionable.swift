@@ -9,7 +9,9 @@
 import Foundation
 public protocol ActionDelegate{
     //func ActionCallback(result:[[String:String]]);
-    func ActionCallback(result:[TableViewItem]);
+    func ActionCallback(_ result:[TableViewItem]);
+    func Summarize(_ tableViewItemIndex:Int);
+    func OpenFile(_ url_string:String);
 }
 public protocol Actionable{
     var delegate:ActionDelegate?{get set};
@@ -17,9 +19,9 @@ public protocol Actionable{
     func Cancel();
 }
 
-public class ActionableKeys{
-    public static let TITLE = "title";
-    public static let DETAIL = "detail";
-    public static let SUMMARY = "summary";
-    public static let TYPE = "type";
+open class ActionableKeys{
+    open static let TITLE = "title";
+    open static let DETAIL = "detail";
+    open static let SUMMARY = "summary";
+    open static let TYPE = "type";
 }

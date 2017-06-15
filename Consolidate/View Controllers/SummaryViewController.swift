@@ -37,8 +37,8 @@ class SummaryViewController: UIViewController {
         }
     }
     
-    private var _title:String?;
-    private var _content:String?;
+    fileprivate var _title:String?;
+    fileprivate var _content:String?;
     override func viewDidLoad() {
         super.viewDidLoad()
         UITextView_Title.text = _title;
@@ -52,15 +52,15 @@ class SummaryViewController: UIViewController {
     }
     
 
-    @IBAction func UIButton_Cancel_Touch_Up_Inside(sender: AnyObject) {
+    @IBAction func UIButton_Cancel_Touch_Up_Inside(_ sender: AnyObject) {
         let model = Model.singleton;
         model.activeView = nil;
-        model.activeViewIndex = nil;
-        self.dismissViewControllerAnimated(true, completion: {});
+        model.activeTableViewItem = nil;
+        self.dismiss(animated: true, completion: {});
     }
     
-    override func preferredStatusBarStyle() -> UIStatusBarStyle {
-        return UIStatusBarStyle.LightContent;
+    override var preferredStatusBarStyle : UIStatusBarStyle {
+        return UIStatusBarStyle.lightContent;
     }
     /*
     // MARK: - Navigation
